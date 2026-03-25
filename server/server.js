@@ -23,5 +23,5 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/assignments', require('./routes/assignments'));
 app.use('/api/notes', require('./routes/notes'));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5003;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

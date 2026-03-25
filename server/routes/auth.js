@@ -7,7 +7,11 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   try {
-const { name, email, password, role, semester } = req.body;\n\n    if (role === 'teacher' && !semester) {\n      return res.status(400).json({ msg: 'Semester is required for teachers' });\n    }"
+    const { name, email, password, role, semester } = req.body;
+
+    if (role === 'teacher' && !semester) {
+      return res.status(400).json({ msg: 'Semester is required for teachers' });
+    }
 
     // Check if user exists
     let user = await User.findOne({ email });
@@ -19,7 +23,13 @@ const { name, email, password, role, semester } = req.body;\n\n    if (role === 
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = new User({\n      name,\n      email,\n      password: hashedPassword,\n      role: role || 'student',\n      semester: role === 'teacher' ? semester : undefined\n    });
+    user = new User({
+      name,
+      email,
+      password: hashedPassword,
+      role: role || 'student',
+      semester: role === 'teacher' ? semester : undefined
+    });
 
     await user.save();
 
@@ -37,7 +47,7 @@ const { name, email, password, role, semester } = req.body;\n\n    if (role === 
       { expiresIn: '24h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+        res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role, semester: user.semester } });
       }
     );
   } catch (err) {
@@ -77,7 +87,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '24h' },
       (err, token) => {
         if (err) throw err;
-        res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+        res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role, semester: user.semester } });
       }
     );
   } catch (err) {

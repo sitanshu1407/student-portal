@@ -7,7 +7,7 @@ const User = require('../models/User');
 // Register
 router.post('/register', async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+const { name, email, password, role, semester } = req.body;\n\n    if (role === 'teacher' && !semester) {\n      return res.status(400).json({ msg: 'Semester is required for teachers' });\n    }"
 
     // Check if user exists
     let user = await User.findOne({ email });
@@ -19,12 +19,7 @@ router.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    user = new User({
-      name,
-      email,
-      password: hashedPassword,
-      role: role || 'student'
-    });
+    user = new User({\n      name,\n      email,\n      password: hashedPassword,\n      role: role || 'student',\n      semester: role === 'teacher' ? semester : undefined\n    });
 
     await user.save();
 

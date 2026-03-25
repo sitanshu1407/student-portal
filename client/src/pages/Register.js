@@ -3,13 +3,7 @@ import { Link } from 'react-router-dom';
 import { register } from '../api';
 
 function Register({ onLogin }) {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    role: 'student'
-  });
+const [formData, setFormData] = useState({\n    name: '',\n    email: '',\n    password: '',\n    confirmPassword: '',\n    role: 'student',\n    semester: ''\n  });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -36,7 +30,7 @@ function Register({ onLogin }) {
     setLoading(true);
 
     try {
-      const res = await register({ name, email, password, role });
+      const res = await register({ name, email, password, role, semester: formData.semester });
       onLogin(res.data.user, res.data.token);
     } catch (err) {
       setError(err.response?.data?.msg || 'Registration failed. Please try again.');
@@ -107,14 +101,7 @@ function Register({ onLogin }) {
             />
           </div>
 
-          <div className="form-group">
-            <label>Register As</label>
-            <select name="role" value={role} onChange={onChange}>
-              <option value="student">Student</option>
-              <option value="teacher">Teacher</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
+          <div className="form-group">\n            <label>Register As</label>\n            <select name="role" value={role} onChange={onChange}>\n              <option value="student">Student</option>\n              <option value="teacher">Teacher</option>\n              <option value="admin">Admin</option>\n            </select>\n          </div>\n          {role === 'teacher' && (\n            <div className="form-group">\n              <label>Semester *</label>\n              <select name="semester" value={formData.semester} onChange={onChange}>\n                <option value="">Select Semester</option>\n                <option value="Sem 1">Sem 1</option>\n                <option value="Sem 2">Sem 2</option>\n                <option value="Sem 3">Sem 3</option>\n                <option value="Sem 4">Sem 4</option>\n                <option value="Sem 5">Sem 5</option>\n                <option value="Sem 6">Sem 6</option>\n                <option value="Sem 7">Sem 7</option>\n                <option value="Sem 8">Sem 8</option>\n              </select>\n            </div>\n          )}
 
           <button type="submit" className="btn btn-primary" disabled={loading}>
             {loading ? 'Creating Account...' : 'Register'}

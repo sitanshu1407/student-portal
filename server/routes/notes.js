@@ -4,6 +4,7 @@ const multer = require('multer');
 const path = require('path');
 const auth = require('../middleware/auth');
 const Note = require('../models/Note');
+const User = require('../models/User');
 
 // File upload configuration
 const storage = multer.diskStorage({
@@ -20,8 +21,13 @@ const upload = multer({ storage: storage });
 // Get all notes
 router.get('/', async (req, res) => {
   try {
-    const notes = await Note.find()
-      .populate('teacher', 'name email')
+    const query = {};
+    if (req.user && req.user.role === 'student') {
+      const teachers = await User.find({ semester: req.user.semester, role: 'teacher' });
+      query.teacher = { $in: teachers.map(t => t._id) };
+    }
+    const notes = await Note.find(query)
+      .populate('teacher', 'name email semester')
       .sort({ createdAt: -1 });
     res.json(notes);
   } catch (err) {

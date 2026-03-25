@@ -38,7 +38,7 @@ router.post('/register', async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'trident_academy_secret_key_2024',
+      process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '24h' },
       (err, token) => {
         if (err) throw err;
@@ -78,7 +78,7 @@ router.post('/login', async (req, res) => {
 
     jwt.sign(
       payload,
-      process.env.JWT_SECRET || 'trident_academy_secret_key_2024',
+      process.env.JWT_SECRET || 'your_jwt_secret_key_here',
       { expiresIn: '24h' },
       (err, token) => {
         if (err) throw err;
@@ -99,7 +99,7 @@ router.get('/me', async (req, res) => {
       return res.status(401).json({ msg: 'No token, authorization denied' });
     }
 
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'trident_academy_secret_key_2024');
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your_jwt_secret_key_here');
     const user = await User.findById(decoded.user.id).select('-password');
     res.json(user);
   } catch (err) {

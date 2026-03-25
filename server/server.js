@@ -14,7 +14,7 @@ app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/trident_portal')
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/trident_portal')
   .then(() => console.log('MongoDB Connected'))
   .catch(err => console.log(err));
 

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 const User = require('../models/User');
 
 // Register
@@ -114,8 +115,11 @@ router.get('/me', async (req, res) => {
 });
 
 // Get all users (admin only)
-router.get('/users', async (req, res) => {
+router.get('/users', auth, async (req, res) => {
   try {
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ msg: 'Admin access only' });
+    }
     const users = await User.find().select('-password').sort({ createdAt: -1 });
     res.json(users);
   } catch (err) {
@@ -125,13 +129,16 @@ router.get('/users', async (req, res) => {
 });
 
 // Delete user (admin only)
-router.delete('/users/:id', async (req, res) => {
+router.delete('/users/:id', auth, async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      return res.status(404).json({ msg: 'User not found' });
+    if (req.user.role !== 'admin') {
+      return res.status(403).json({ msg: 'Admin access only' });
     }
-
+    const user = await User.findById(req.params.id);
+    if (!user) return res.status(404).json({ msg: 'User not found' });
+    if (user._id.toString() === req.user.id) {
+      return res.status(400).json({ msg: 'Cannot delete your own account' });
+    }
     await user.deleteOne();
     res.json({ msg: 'User removed' });
   } catch (err) {
@@ -139,5 +146,6 @@ router.delete('/users/:id', async (req, res) => {
     res.status(500).send('Server Error');
   }
 });
+
 
 module.exports = router;

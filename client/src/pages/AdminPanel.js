@@ -100,7 +100,7 @@ function AdminPanel({ user }) {
                   </td>
                   <td>{formatDate(u.createdAt)}</td>
                   <td>
-                    {u._id !== user._id && (
+                    {(u._id) !== (user._id) && (
                       <button
                         className="btn btn-danger btn-sm"
                         onClick={() => handleDeleteUser(u._id)}

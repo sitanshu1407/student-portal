@@ -1,10 +1,10 @@
-# TODO: Add Semester Feature for Teachers
+# Fix Admin Self-Delete Bug
 
-- [x] Create TODO.md
-- [x] Read/edit server/models/User.js (add semester field)
-- [x] Edit server/routes/auth.js (register validation for teacher semester)
-- [x] Edit client/src/pages/Register.js (add semester dropdown for teacher)
-- [x] Edit server/routes/assignments.js & notes.js (filter by semester)
-- [ ] Edit client/src/pages/Dashboard.js & AdminPanel.js (semester filter/UI)
-- [x] Commit & push changes
-- [ ] Test registration/filtering
+## Steps:
+- [x] 1. Add required imports to server/routes/auth.js
+- [x] 2. Protect GET /users endpoint with auth + admin check
+- [x] 3. Fix DELETE /users/:id with auth, admin check, self-delete prevention
+- [ ] 4. Restart server
+- [ ] 5. Test: Cannot delete own ID in AdminPanel
+
+Current: Step 5 - Server restarted successfully (MongoDB Connected)

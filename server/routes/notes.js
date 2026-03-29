@@ -19,13 +19,18 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Get all notes
-router.get('/', async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const query = {};
-    if (req.user && req.user.role === 'student') {
+
+    if (req.user.role === 'student') {
+      if (!req.user.semester) {
+        return res.status(400).json({ msg: 'Your semester is not set. Contact your admin.' });
+      }
       const teachers = await User.find({ semester: req.user.semester, role: 'teacher' });
       query.teacher = { $in: teachers.map(t => t._id) };
     }
+
     const notes = await Note.find(query)
       .populate('teacher', 'name email semester')
       .sort({ createdAt: -1 });

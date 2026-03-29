@@ -10,8 +10,8 @@ router.post('/register', async (req, res) => {
   try {
     const { name, email, password, role, semester } = req.body;
 
-    if (role === 'teacher' && !semester) {
-      return res.status(400).json({ msg: 'Semester is required for teachers' });
+    if (role !== 'admin' && !semester) {
+      return res.status(400).json({ msg: 'Semester is required for students and teachers' });
     }
 
     // Check if user exists
@@ -29,7 +29,7 @@ router.post('/register', async (req, res) => {
       email,
       password: hashedPassword,
       role: role || 'student',
-      semester: role === 'teacher' ? semester : undefined
+      semester: role === 'admin' ? undefined : semester
     });
 
     await user.save();

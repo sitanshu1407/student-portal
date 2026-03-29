@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getAssignments, createAssignment, deleteAssignment, getNotes, createNote, deleteNote } from '../api';
 
 function Dashboard({ user }) {

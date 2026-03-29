@@ -23,7 +23,7 @@ router.get('/', auth, async (req, res) => {
   try {
     const query = {};
 
-    if (req.user.role === 'student') {
+    if (req.user.role !== 'admin') {
       if (!req.user.semester) {
         return res.status(400).json({ msg: 'Your semester is not set. Contact your admin.' });
       }

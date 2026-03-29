@@ -134,6 +134,23 @@ function Register({ onLogin }) {
             </div>
           )}
 
+        {role === 'student' && (
+            <div className="form-group">
+              <label>Semester *</label>
+              <select name="semester" value={semester} onChange={onChange} required>
+                <option value="">Select Semester</option>
+                <option value="Sem 1">Sem 1</option>
+                <option value="Sem 2">Sem 2</option>
+                <option value="Sem 3">Sem 3</option>
+                <option value="Sem 4">Sem 4</option>
+                <option value="Sem 5">Sem 5</option>
+                <option value="Sem 6">Sem 6</option>
+                <option value="Sem 7">Sem 7</option>
+                <option value="Sem 8">Sem 8</option>
+              </select>
+            </div>
+          )}  
+
           <button type="submit" className="btn btn-primary" disabled={loading}>
             {loading ? 'Creating Account...' : 'Register'}
           </button>

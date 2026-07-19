@@ -125,4 +125,4 @@ student-portal/
 ```
 
 ## License
-MIT
+Project build by sitanshu sekhar sahu .
